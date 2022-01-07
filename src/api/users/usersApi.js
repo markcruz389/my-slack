@@ -39,6 +39,7 @@ export const loginUser = async (user) => {
   try {
     const response = await axios.post(API_BASE_URL + "/auth/sign_in", payload);
     console.log(response);
+    return response;
   } catch (error) {
     console.error(error);
   }

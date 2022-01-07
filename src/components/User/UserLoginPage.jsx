@@ -3,6 +3,7 @@ import { SpinnerDotted } from "spinners-react";
 import { toast } from "react-toastify";
 import LoginForm from "./LoginForm";
 import { loginUser } from "../../api/users/usersApi";
+import { saveAuth } from "../../services/localStorage";
 
 const UserLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -26,11 +27,10 @@ const UserLoginPage = () => {
 
     setIsLoading(true);
     (async () => {
-      await loginUser(user);
+      const response = await loginUser(user);
+      saveAuth(response.headers);
       setIsLoading(false);
     })();
-
-    // setIsLoading(false);
   };
 
   const formIsValid = () => {
