@@ -10,10 +10,11 @@ function App() {
   return (
     <div className='App'>
       <Routes>
-        <Route path='/' exact element={<Layout />} />
-        <Route index element={<UserLoginPage />} />
-        <Route path='users/manage-user:id' element={<ManageUserPage />} />
-        <Route path='users/manage-user' element={<ManageUserPage />} />
+        <Route path='/' exact element={<Layout />}>
+          <Route index element={<UserLoginPage />} />
+          <Route path='users/manage-user:id' element={<ManageUserPage />} />
+          <Route path='users/manage-user' element={<ManageUserPage />} />
+        </Route>
       </Routes>
       <ToastContainer />
     </div>

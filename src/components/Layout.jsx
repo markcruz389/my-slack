@@ -1,6 +1,9 @@
 import React from "react";
 import { Outlet } from "react-router";
-// import Header from "./common/Header";
+import Header from "./common/Header";
+import { getAuth } from "../services/localStorage";
+
+const auth = getAuth();
 
 function Layout() {
   return (
@@ -8,7 +11,7 @@ function Layout() {
        share across all the pages on your site, like navigation. */
 
     <div>
-      {/* <Header /> */}
+      <Header />
       <Outlet />
     </div>
   );

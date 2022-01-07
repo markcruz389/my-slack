@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import UserForm from "./UserForm";
-import { getUsers, registerUser } from "../../api/users/usersApi";
+import { registerUser } from "../../api/users/usersApi";
 
 const ManageUserPage = () => {
   const [user, setUser] = useState({
