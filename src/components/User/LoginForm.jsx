@@ -6,7 +6,7 @@ import PasswordInput from "../common/PasswordInput";
 const LoginForm = ({ user, onChange, onSubmit, errors }) => {
   return (
     <>
-      <form onSubmit={onSubmit} autoComplete='off'>
+      <form onSubmit={onSubmit} autoComplete='on'>
         <div className='row mb-2'>
           <div className='col'>
             <EmailInput

@@ -1,21 +1,25 @@
 import axios from "axios";
+import { API_BASE_URL } from "./constants";
+import * as apiUtils from "./apiUtils";
 
-const API_BASE_URL = "https://slackapi.avionschool.com/api/v1";
+// Users
 
 export const getUsers = async () => {
+  const _headers = apiUtils.createHeaders();
+
   try {
     const response = await axios.get(API_BASE_URL + "/users", {
-      headers: {
-        "access-token": "EyJCCUihCIB2Ai9-doxosg",
-      },
+      headers: _headers,
     });
-    console.log(response);
+    return apiUtils.handleResponse(response);
   } catch (error) {
+    debugger;
+    apiUtils.handleError(error);
     console.error(error);
   }
 };
 
-export const registerUser = async (user) => {
+export const saveUser = async (user) => {
   const payload = {
     email: user.email,
     password: user.password,
@@ -24,8 +28,10 @@ export const registerUser = async (user) => {
 
   try {
     const response = await axios.post(API_BASE_URL + "/auth", payload);
+    apiUtils.handleResponse(response);
     console.log(response);
   } catch (error) {
+    apiUtils.handleResponse(error);
     console.error(error);
   }
 };
@@ -38,9 +44,11 @@ export const loginUser = async (user) => {
 
   try {
     const response = await axios.post(API_BASE_URL + "/auth/sign_in", payload);
+    apiUtils.handleResponse(response);
     console.log(response);
     return response;
   } catch (error) {
+    apiUtils.handleResponse(error);
     console.error(error);
   }
 };

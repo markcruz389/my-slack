@@ -5,7 +5,9 @@
     account - account object that will be added/created
 */
 export function initLocalStorage() {
-  localStorage.setItem("auth", JSON.stringify({}));
+  if (localStorage.getItem("auth") === null) {
+    localStorage.setItem("auth", JSON.stringify({}));
+  }
 }
 
 /* 
@@ -26,4 +28,14 @@ export function saveAuth(data) {
 */
 export function getAuth() {
   return JSON.parse(localStorage.getItem("auth"));
+}
+
+/* 
+  Summary: 
+    Sets auth to empty object
+  Params:
+    account - account object that will be added/created
+*/
+export function deleteAuth() {
+  localStorage.setItem("auth", JSON.stringify({}));
 }

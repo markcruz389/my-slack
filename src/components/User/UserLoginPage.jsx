@@ -1,9 +1,12 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { SpinnerDotted } from "spinners-react";
 import { toast } from "react-toastify";
 import LoginForm from "./LoginForm";
-import { loginUser } from "../../api/users/usersApi";
+import { loginUser } from "../../api/usersApi";
 import { saveAuth } from "../../services/localStorage";
+import { useNavigate } from "react-router";
+import { useEffect } from "react/cjs/react.development";
+import { UserLoginContext } from "../context";
 
 const UserLoginPage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -12,6 +15,14 @@ const UserLoginPage = () => {
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const navigate = useNavigate();
+  const [userLoginContext, setUserLoginContext] = useContext(UserLoginContext);
+
+  useEffect(() => {
+    return () => {
+      setIsLoading(false);
+    };
+  });
 
   const handleChange = ({ target }) => {
     setUser({ ...user, [target.name]: target.value });
@@ -28,9 +39,23 @@ const UserLoginPage = () => {
     setIsLoading(true);
     (async () => {
       const response = await loginUser(user);
-      saveAuth(response.headers);
+
+      if (response.status === 200) {
+        saveAuth(response.headers);
+        setUserLoginContext({
+          ...userLoginContext,
+          email: response.data.data.email,
+          id: response.data.data.id,
+          uid: response.data.data.uid,
+        });
+        navigate("users/user-dashboard", {
+          replace: true,
+        });
+      }
+
       setIsLoading(false);
     })();
+    console.log(userLoginContext);
   };
 
   const formIsValid = () => {

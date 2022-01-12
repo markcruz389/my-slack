@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import UserForm from "./UserForm";
-import { registerUser } from "../../api/users/usersApi";
+import { saveUser } from "../../api/usersApi";
 
 const ManageUserPage = () => {
   const [user, setUser] = useState({
@@ -26,7 +26,7 @@ const ManageUserPage = () => {
     }
 
     (async () => {
-      const data = await registerUser(user);
+      const data = await saveUser(user);
       console.log(data);
     })();
   };
