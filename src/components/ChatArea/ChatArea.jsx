@@ -138,62 +138,69 @@ const ChatArea = ({ channelId }) => {
 
   return (
     <>
-      {console.log(messages)}
-      <div className='row mb-2 border-bot tom py-2'>
-        <div className='col d-flex justify-content-between px-0'>
-          <div className='row'>
+      {channelId !== null ? (
+        <>
+          <div className='row mb-2 border-bot tom py-2'>
+            <div className='col d-flex justify-content-between px-0'>
+              <div className='row'>
+                <div className='col'>
+                  <span className='fs-4'>{activeChannel.data?.name}</span>
+                </div>
+              </div>
+              <div className='row'>
+                <div className='col'>
+                  <button
+                    className='btn btn-info'
+                    onClick={() =>
+                      modalDispatcher({ type: "OPEN_MEMBERS_MODAL" })
+                    }
+                  >
+                    Members
+                  </button>
+                  <ChannelMembersModal
+                    members={activeChannel.data?.channel_members}
+                    showModal={showModal.members}
+                    closeModal={() => modalDispatcher({ type: "CLOSE_MODAL" })}
+                  />
+                </div>
+                <div className='col'>
+                  <button
+                    className='btn btn-success'
+                    onClick={() =>
+                      modalDispatcher({ type: "OPEN_ADD_MEMBER_MODAL" })
+                    }
+                  >
+                    +
+                  </button>
+                  <AddChannelMemberModal
+                    newChannelMember={newChannelMember}
+                    addChannelMemberHandlers={addChannelMemberHandlers}
+                    showModal={showModal.addMember}
+                    closeModal={() => modalDispatcher({ type: "CLOSE_MODAL" })}
+                    errors={newMemberErrors}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className='row h-75'>
             <div className='col'>
-              <span className='fs-4'>{activeChannel.data?.name}</span>
+              <ChatBox messages={messages.data} />
             </div>
           </div>
           <div className='row'>
-            <div className='col'>
-              <button
-                className='btn btn-info'
-                onClick={() => modalDispatcher({ type: "OPEN_MEMBERS_MODAL" })}
-              >
-                Members
-              </button>
-              <ChannelMembersModal
-                members={activeChannel.data?.channel_members}
-                showModal={showModal.members}
-                closeModal={() => modalDispatcher({ type: "CLOSE_MODAL" })}
-              />
-            </div>
-            <div className='col'>
-              <button
-                className='btn btn-success'
-                onClick={() =>
-                  modalDispatcher({ type: "OPEN_ADD_MEMBER_MODAL" })
-                }
-              >
-                +
-              </button>
-              <AddChannelMemberModal
-                newChannelMember={newChannelMember}
-                addChannelMemberHandlers={addChannelMemberHandlers}
-                showModal={showModal.addMember}
-                closeModal={() => modalDispatcher({ type: "CLOSE_MODAL" })}
-                errors={newMemberErrors}
+            <div className='col px-0 pt-3'>
+              <MessageBox
+                message={message}
+                onChange={sendChannelMessageHandlers.onChange}
+                onSubmit={sendChannelMessageHandlers.onSubmit}
               />
             </div>
           </div>
-        </div>
-      </div>
-      <div className='row h-75'>
-        <div className='col'>
-          <ChatBox messages={messages.data} />
-        </div>
-      </div>
-      <div className='row'>
-        <div className='col px-0 pt-3'>
-          <MessageBox
-            message={message}
-            onChange={sendChannelMessageHandlers.onChange}
-            onSubmit={sendChannelMessageHandlers.onSubmit}
-          />
-        </div>
-      </div>
+        </>
+      ) : (
+        <></>
+      )}
     </>
   );
 };

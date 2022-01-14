@@ -27,10 +27,6 @@ export const send = async (request) => {
 
 export const retrieveMessages = async (params) => {
   const _headers = apiUtils.createHeaders();
-  const _params = new URLSearchParams([
-    ["receiver_id", params.receiverId],
-    ["receiver_class", params.receiverClass],
-  ]);
 
   try {
     const response = await axios.get(
