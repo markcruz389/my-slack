@@ -41,7 +41,8 @@ const UserLoginPage = () => {
       const response = await loginUser(user);
 
       if (response.status === 200) {
-        saveAuth(response.headers);
+        const auth = { ...response.headers, userId: response.data.data.id };
+        saveAuth(auth);
         setUserLoginContext({
           ...userLoginContext,
           email: response.data.data.email,

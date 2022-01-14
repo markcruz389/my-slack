@@ -12,7 +12,7 @@ const TextareaInput = ({ id, label, name, value, onChange, style }) => {
         onChange={onChange}
         style={style}
       ></textarea>
-      <label for='floatingTextarea'>{label}</label>
+      <label htmlFor='floatingTextarea'>{label}</label>
     </div>
   );
 };

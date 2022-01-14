@@ -183,7 +183,7 @@ const ChatArea = ({ channelId }) => {
               </div>
             </div>
           </div>
-          <div className='row h-75'>
+          <div className='row h-75 overflow-auto'>
             <div className='col'>
               <ChatBox messages={messages.data} />
             </div>

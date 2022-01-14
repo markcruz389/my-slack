@@ -27,7 +27,7 @@ const DataListInput = ({
       </div>
       <datalist id='users'>
         {dataList.map((data) => (
-          <option value={`${data.id} - ${data.uid}`}></option>
+          <option key={data.id} value={`${data.id} - ${data.uid}`}></option>
         ))}
       </datalist>
     </>

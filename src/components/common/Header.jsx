@@ -2,12 +2,19 @@ import React, { useState, useEffect, useContext } from "react";
 import { getAuth, deleteAuth } from "../../services/localStorage";
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router";
-import { UserLoginContext, ChannelsContext } from "../context";
+import {
+  UserLoginContext,
+  ChannelsContext,
+  DirectMessagesContext,
+} from "../context";
 
 const Header = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [userLoginContext, setUserLoginContext] = useContext(UserLoginContext);
   const [channelsContext, setChannelsContext] = useContext(ChannelsContext);
+  const [directMessageContext, setDirectMessageContext] = useContext(
+    DirectMessagesContext
+  );
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -18,6 +25,8 @@ const Header = () => {
   const logOut = () => {
     deleteAuth();
     setChannelsContext([]);
+    setUserLoginContext({});
+    setDirectMessageContext([]);
     navigate(`../users/user-login`, { replace: true });
   };
 
