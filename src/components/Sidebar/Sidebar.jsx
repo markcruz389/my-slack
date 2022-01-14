@@ -1,61 +1,16 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useContext } from "react";
 import ChannelModal from "./ChannelModal";
-import { saveChannel } from "../../api/channelsApi";
-import { getUsers } from "../../api/usersApi";
-import { toast } from "react-toastify";
-import { UserLoginContext, ChannelsContext } from "../context";
+import { Link } from "react-router-dom";
+import { ChannelsContext } from "../context";
 
-const Sidebar = () => {
-  const [showModal, setShowModal] = useState(false);
-  const [channel, setChannel] = useState({
-    name: "",
-    userWith: "",
-  });
-  const [channelErrors, setChannelErrors] = useState({});
-  const [userLoginContext] = useContext(UserLoginContext);
-  const channels = useContext(ChannelsContext);
-
-  useEffect(() => {});
-
-  const handleChannelChange = ({ target }) => {
-    setChannel({ ...channel, [target.name]: target.value });
-  };
-
-  const handleChannelSubmit = (event) => {
-    event.preventDefault();
-
-    if (!isChannelFormValid()) {
-      toast.error("Some fields are not valid");
-      return;
-    }
-
-    (async () => {
-      const request = {
-        name: channel.name,
-        userId1: userLoginContext.id,
-        userId2: parseInt(channel.userWith.split("-")[0].trim(), 10),
-      };
-      const response = await saveChannel(request);
-
-      if (response.status === 200) {
-        toast.success("Channel Created");
-        setShowModal(false);
-      }
-
-      console.log(response);
-    })();
-  };
-
-  const isChannelFormValid = () => {
-    const errors = {};
-
-    if (!channel.name) {
-      errors.name = "Name is required";
-    }
-
-    setChannelErrors(errors);
-    return Object.keys(errors).length === 0;
-  };
+const Sidebar = ({
+  channel,
+  channelErrors,
+  channelHandlers,
+  showModal,
+  setShowModal,
+}) => {
+  const [channelsContext] = useContext(ChannelsContext);
 
   return (
     <>
@@ -72,7 +27,7 @@ const Sidebar = () => {
             Channels
           </a> */}
           <a
-            className='btn btn-primary btn-sm'
+            className='btn btn-light'
             data-bs-toggle='collapse'
             href='#channelsCollapse'
             role='button'
@@ -92,10 +47,15 @@ const Sidebar = () => {
         </div>
         <div className='collapse mt-2' id='channelsCollapse'>
           <ul className='list-group'>
-            {console.log(channels.data)}
-            {channels.data?.map((channel) => (
+            {channelsContext.data?.map((channel) => (
               <li key={channel.id} className='list-group-item'>
-                {channel.name}
+                <Link
+                  className='text-decoration-none'
+                  to=''
+                  onClick={() => channelHandlers.onClick(channel.id)}
+                >
+                  {channel.name}
+                </Link>
               </li>
             ))}
           </ul>
@@ -105,8 +65,8 @@ const Sidebar = () => {
         channel={channel}
         showModal={showModal}
         closeModal={() => setShowModal(false)}
-        onChange={handleChannelChange}
-        onSubmit={handleChannelSubmit}
+        onChange={channelHandlers.onChange}
+        onSubmit={channelHandlers.onSubmit}
         errors={channelErrors}
       />
     </>

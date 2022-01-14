@@ -8,7 +8,7 @@ import { getChannels } from "../api/channelsApi";
 
 function Layout() {
   const [users, setUsers] = useState([]);
-  const [channels, setChannels] = useState([]);
+  const [channelsContext, setChannelsContext] = useState([]);
   const [userLoginContext, setUserLoginContext] = useState({
     email: "",
     id: null,
@@ -36,7 +36,7 @@ function Layout() {
     if (isLoggedIn) {
       (async () => {
         const response = await getChannels();
-        setChannels(response?.data);
+        setChannelsContext(response?.data);
       })();
     }
   }, [isLoggedIn]);
@@ -49,7 +49,7 @@ function Layout() {
       <UserLoginContext.Provider
         value={[userLoginContext, setUserLoginContext]}
       >
-        <ChannelsContext.Provider value={channels}>
+        <ChannelsContext.Provider value={[channelsContext, setChannelsContext]}>
           <UsersContext.Provider value={users}>
             <Header />
             <Outlet />
