@@ -20,14 +20,12 @@ export const getUsers = async () => {
 };
 
 export const saveUser = async (user) => {
-  const payload = {
-    email: user.email,
-    password: user.password,
-    password_confirmation: user.confrimPassword,
-  };
-
   try {
-    const response = await axios.post(API_BASE_URL + "/auth", payload);
+    const response = await axios.post(API_BASE_URL + "/auth", {
+      email: user.email,
+      password: user.password,
+      password_confirmation: user.confirmPassword,
+    });
     apiUtils.handleResponse(response);
     console.log(response);
   } catch (error) {
