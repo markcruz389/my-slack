@@ -1,5 +1,6 @@
 import React, { useEffect, useState, useReducer } from "react";
 import { getChannelById, saveMemberInChannel } from "../../api/channelsApi";
+import { send, retrieveMessages } from "../../api/messagesApi";
 import ChatBox from "./ChatBox";
 import MessageBox from "./MessageBox";
 import ChannelMembersModal from "./ChannelMembersModal";
@@ -33,6 +34,11 @@ const ChatArea = ({ channelId }) => {
     member: "",
   });
   const [newMemberErrors, setNewMemberErrors] = useState({});
+  const [message, setMessage] = useState({
+    body: "",
+  });
+  const [messages, setMessages] = useState({});
+  const [messageReferenceId, setMessageReferenceId] = useState(null);
   const [showModal, modalDispatcher] = useReducer(modalReducer, {
     members: false,
     addMember: false,
@@ -48,6 +54,21 @@ const ChatArea = ({ channelId }) => {
       })();
     }
   }, [channelId]);
+
+  useEffect(() => {
+    if (channelId !== null) {
+      (async () => {
+        const params = {
+          receiverId: channelId,
+          receiverClass: "Channel",
+        };
+        const response = await retrieveMessages(params);
+        if (response.status === 200) {
+          setMessages(response.data);
+        }
+      })();
+    }
+  }, [channelId, messageReferenceId]);
 
   const addChannelMemberHandlers = {
     onChange: ({ target }) => {
@@ -80,6 +101,30 @@ const ChatArea = ({ channelId }) => {
     },
   };
 
+  const sendChannelMessageHandlers = {
+    onChange: ({ target }) => {
+      setMessage({ ...message, [target.name]: target.value });
+    },
+    onSubmit: (event) => {
+      event.preventDefault();
+
+      (async () => {
+        const request = {
+          receiverId: activeChannel.data.id,
+          receiverClass: "Channel",
+          body: message.body,
+        };
+        const response = await send(request);
+
+        if (response.status === 200) {
+          console.log(response.data);
+          setMessageReferenceId(response.data.data.messageReferenceId);
+          toast.success("Message Sent");
+        }
+      })();
+    },
+  };
+
   const isNewMemberFormIsValid = () => {
     const errors = {};
 
@@ -93,7 +138,7 @@ const ChatArea = ({ channelId }) => {
 
   return (
     <>
-      {console.log(activeChannel)}
+      {console.log(messages)}
       <div className='row mb-2 border-bot tom py-2'>
         <div className='col d-flex justify-content-between px-0'>
           <div className='row'>
@@ -135,14 +180,18 @@ const ChatArea = ({ channelId }) => {
           </div>
         </div>
       </div>
-      <div className='row h-75 bg-dark'>
+      <div className='row h-75'>
         <div className='col'>
-          <ChatBox />
+          <ChatBox messages={messages.data} />
         </div>
       </div>
       <div className='row'>
         <div className='col px-0 pt-3'>
-          <MessageBox />
+          <MessageBox
+            message={message}
+            onChange={sendChannelMessageHandlers.onChange}
+            onSubmit={sendChannelMessageHandlers.onSubmit}
+          />
         </div>
       </div>
     </>
