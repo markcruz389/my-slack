@@ -8,7 +8,7 @@ import { getChannels } from "../api/channelsApi";
 
 function Layout() {
   const [users, setUsers] = useState([]);
-  const [channelsContext, setChannelsContext] = useState([]);
+  const [channelsContext, setChannelsContext] = useState({ data: [] });
   const [userLoginContext, setUserLoginContext] = useState({
     email: "",
     id: null,
@@ -38,6 +38,7 @@ function Layout() {
         const response = await getChannels();
         setChannelsContext(response?.data);
       })();
+      console.log(channelsContext);
     }
   }, [isLoggedIn]);
 

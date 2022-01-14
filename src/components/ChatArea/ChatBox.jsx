@@ -6,6 +6,7 @@ const ChatBox = ({ messages }) => {
     <div className='d-flex flex-column justify-content-end h-100'>
       {messages?.map((message) => (
         <ChatItem
+          key={message.id}
           sender={message.sender.email}
           timeSent={message.created_at}
           messageBody={message.body}

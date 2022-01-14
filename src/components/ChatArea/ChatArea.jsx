@@ -155,7 +155,7 @@ const ChatArea = ({ channelId }) => {
                 Members
               </button>
               <ChannelMembersModal
-                members={activeChannel.data.channel_members}
+                members={activeChannel.data?.channel_members}
                 showModal={showModal.members}
                 closeModal={() => modalDispatcher({ type: "CLOSE_MODAL" })}
               />

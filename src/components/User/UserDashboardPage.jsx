@@ -17,8 +17,10 @@ const UserDashboardPage = () => {
   const [channelsContext, setChannelsContext] = useContext(ChannelsContext);
 
   useEffect(() => {
-    // console.log(channelsContext.data[0].id);
-  }, []);
+    if (channelsContext?.data?.length > 0) {
+      setChannelId(channelsContext.data[0].id);
+    }
+  }, [channelsContext.data]);
 
   const channelHandlers = {
     onChange: ({ target }) => {
